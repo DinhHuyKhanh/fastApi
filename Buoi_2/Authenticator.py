@@ -10,10 +10,10 @@ class Authenticator:
         Authenticator.set_token_user(token=token,user=user)
         return {token}
 
-    def set_token_user(self,token: str,user: User):
-        self.token_map["Bearer "+token]=user;
+    def set_token_user(token: str,user: User):
+        Authenticator.token_map["Bearer "+token]=user;
 
-    def get_token_user(self,token: str):
-        if self.token_map.get(token) != None :
-            return self.token_map.get(token)
+    def get_token_user(token: str):
+        if Authenticator.token_map.get(token) != None :
+            return Authenticator.token_map.get(token)
         return False

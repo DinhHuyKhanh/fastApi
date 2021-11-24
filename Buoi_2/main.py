@@ -38,7 +38,7 @@ async def register_user(user: User):
 async def login(login : LoginRequest):
     list_user = utils.read_users()
     for u in list_user :
-       if u["username"] == login.get_username() and u["password"]== login.get_password():
+       if u["username"] == login.username and u["password"]== login.password:
            return {"full_name": u["full_name"],"token": Authenticator.create_token(user=u)}
     return {"message":"login fail"}
 
