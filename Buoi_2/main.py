@@ -10,7 +10,7 @@ app = FastAPI()
 def verify_token(request: Request):
     token = request.headers.get('Authorization')
     if token:
-        data= Authenticator.get_token_user(Authenticator ,token=token)
+        data= Authenticator.get_token_user(token=token)
         if(data == None):
             return False
         return data
