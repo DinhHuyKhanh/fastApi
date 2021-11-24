@@ -22,25 +22,25 @@ def read_data():
 
 
 ## get ALL message
-@app.get("/bot/message/")
+@app.get("/message")
 async def get_message():
     list_message = read_data();
     return list_message;
 
 
 ## method: get message by id
-@app.get("/bot/message/id/{id}")
-async def get_message_by_id(id: int):
+@app.get("/message/{msg_id}")
+async def get_message_by_id(msg_id: int):
     list_message= read_data()
 
-    if(id>len(list_message) or id<=0):
+    if(id>len(list_message) or msg_id<=0):
         return {"message":"không tồn tại!"}
 
     return list_message[id-1]
 
 
 # method: create message
-@app.post("/bot/message/create")
+@app.post("/message/create")
 async def create_message(message: Message):
 
     # tạo json từ class Message
@@ -61,13 +61,13 @@ async def create_message(message: Message):
 
 
 # method delete by id
-@app.delete("/bot/message/delete/id/{id}")
-async def delete_message_by_id(id: int):
+@app.delete("/message/{msg_id}")
+async def delete_message_by_id(msg_id: int):
     list_message = read_data()
     index = 0 
     
     for mess in list_message:
-        if(mess["message_id"] == id):
+        if(mess["message_id"] == msg_id):
             list_message.pop(index)
         index+=1
     
@@ -78,12 +78,12 @@ async def delete_message_by_id(id: int):
     return {"message:" "success"}
 
 # method: update
-@app.post("/bot/message/update")
-async def update_message(message: Message):
+@app.put("/message/{msg_id}")
+async def update_message(msg_id: int,message: Message):
     list_message = read_data()
     # list_message = json.loads(list_message)
     for mess in list_message:
-       if (mess["message_id"] == message.get_message_id() ):
+       if (mess["message_id"] == msg_id ):
            mess["message"] = message.get_message()
            break;
     # lưu vào file
