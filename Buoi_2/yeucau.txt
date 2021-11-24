@@ -1,0 +1,7 @@
+1: register (id, username, pw)
+2.login (token (string_random), tạo cái map < token,user> ) 
+3. message : owner(chứa id_user)
+4. get_list_message: chỉ lấy ra các mesage thuộc user.( token-> user)
+
+
+
