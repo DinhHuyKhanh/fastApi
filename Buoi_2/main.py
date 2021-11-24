@@ -1,5 +1,3 @@
-
-from os import P_NOWAIT
 from fastapi import FastAPI,Request,Depends
 from fastapi.encoders import jsonable_encoder
 from Entity import User,LoginRequest, Message
@@ -28,12 +26,12 @@ async def register_user(user: User):
 
     for u in list_users :
         if(u.get("username") == user.get_username() ): 
-            return {"User already exists"}
+            return {"message":"User already exists"}
 
     list_users.append(data)
     utils.save_user(list_users=list_users)
 
-    return {"success"}
+    return {"message":"success"}
 
 
 @app.post("/login")
@@ -42,12 +40,12 @@ async def login(login : LoginRequest):
     for u in list_user :
        if u["username"] == login.get_username() and u["password"]== login.get_password():
            return {"full_name": u["full_name"],"token": Authenticator.create_token(user=u)}
-    return {"login fail"}
+    return {"message":"login fail"}
 
 
 @app.post("/message")
-async def create_message(message: Message, authorized: str =Depends(verify_token)):
-    if(authorized):
+async def create_message(message: Message, authorized = Depends(verify_token)):
+    if authorized:
         # doc du lieu tu file message
         list_message = utils.read_message()
         
@@ -59,13 +57,13 @@ async def create_message(message: Message, authorized: str =Depends(verify_token
         list_message.append(data)
         utils.save_message(list_message=list_message)
 
-        return {"success"}
-    return "fail"
+        return {"message":"success"}
+    return {"message":"fail"}
 
 
 @app.get("/message")
-async def get_message(authorized: str= Depends(verify_token)):
-    if (authorized): 
+async def get_message(authorized = Depends(verify_token)):
+    if authorized : 
         list_message = utils.read_message()
         list_msg_response=[]
 
@@ -76,7 +74,7 @@ async def get_message(authorized: str= Depends(verify_token)):
     
         return list_msg_response
 
-    return {"fail"}
+    return {"message":"fail"}
 
 
 

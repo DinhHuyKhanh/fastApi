@@ -7,7 +7,7 @@ class Authenticator:
 
     def create_token(user: User):
         token = secrets.token_urlsafe(256)
-        Authenticator.set_token_user(Authenticator,token=token,user=user)
+        Authenticator.set_token_user(token=token,user=user)
         return {token}
 
     def set_token_user(self,token: str,user: User):
