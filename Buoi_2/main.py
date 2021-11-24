@@ -11,7 +11,7 @@ def verify_token(request: Request):
     token = request.headers.get('Authorization')
     if token:
         data= Authenticator.get_token_user(token=token)
-        if(data == None):
+        if data == False:
             return False
         return data
     return False;
@@ -25,7 +25,7 @@ async def register_user(user: User):
     data = jsonable_encoder(user)
 
     for u in list_users :
-        if(u.get("username") == user.username ): 
+        if u.get("username") == user.username : 
             return {"message":"User already exists"}
 
     list_users.append(data)
