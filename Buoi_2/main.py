@@ -1,9 +1,9 @@
 from fastapi import FastAPI,Request,Depends
 from fastapi.encoders import jsonable_encoder
-from Entity import User,LoginRequest, Message
 from utils import utils
-from Authenticator import Authenticator
-
+from Modules.User import User
+from Modules.Authenticator import Authenticator
+from Modules.Message import Message
 
 app = FastAPI()
 
@@ -25,7 +25,7 @@ async def register_user(user: User):
     data = jsonable_encoder(user)
 
     for u in list_users :
-        if(u.get("username") == user.get_username() ): 
+        if(u.get("username") == user.username ): 
             return {"message":"User already exists"}
 
     list_users.append(data)
@@ -35,7 +35,7 @@ async def register_user(user: User):
 
 
 @app.post("/login")
-async def login(login : LoginRequest):
+async def login(login : User):
     list_user = utils.read_users()
     for u in list_user :
        if u["username"] == login.username and u["password"]== login.password:

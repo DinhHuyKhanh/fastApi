@@ -1,8 +1,8 @@
-
-from Entity import User
-
 import secrets
+from Modules.User import User
+
 class Authenticator:
+
     token_map={}
 
     def create_token(user: User):
