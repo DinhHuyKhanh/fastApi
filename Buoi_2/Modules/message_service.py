@@ -1,5 +1,4 @@
 
-from typing import List
 import json
 from Modules.message import Message
 from fastapi.encoders import jsonable_encoder

@@ -1,5 +1,4 @@
 from fastapi import FastAPI,Depends
-from fastapi.encoders import jsonable_encoder
 from Modules.message_service import message_service
 from Modules.user import User
 from Modules.authenticator import Authenticator,Verify_token
