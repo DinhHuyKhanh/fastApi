@@ -1,5 +1,8 @@
 import secrets
-from Modules.User import User
+from Modules.message import Message
+from Modules.user import User
+from fastapi import Request
+from Modules.user_service import user_service
 
 class Authenticator:
 
@@ -7,13 +10,21 @@ class Authenticator:
 
     def create_token(user: User):
         token = secrets.token_urlsafe(256)
-        Authenticator.set_token_user(token=token,user=user)
+        Authenticator.token_map["Bearer " +token] = user
         return {token}
 
-    def set_token_user(token: str,user: User):
-        Authenticator.token_map["Bearer "+token]=user;
+    def login(login:User):
+        list_users= user_service.read_users();
+        for u in list_users :
+            if u["username"] == login.username and u["password"]== login.password:
+             return {"full_name": u["full_name"],"token": Authenticator.create_token(user=u)}
+        return {{"message":"login fail"}}
 
-    def get_token_user(token: str):
-        if Authenticator.token_map.get(token) != None :
-            return Authenticator.token_map.get(token)
-        return False
+class Verify_token:
+    def verify_token(request: Request):
+        token = request.headers.get('Authorization')
+        if token:
+             data= Authenticator.token_map.get(token)
+             if data :
+                return data.get("user_id")
+        raise Exception("No data")
