@@ -1,4 +1,5 @@
 # from bson.objectid import ObjectId
+from bson.objectid import ObjectId
 from pymongo import MongoClient
 
 myClient = MongoClient("mongodb://localhost:27017/")
@@ -70,7 +71,8 @@ entity_col = my_db["entity"]
 
 
 ## insert 1000 document bot, entity, intent
-# cnt=1000;
+## insert 1000 bot
+# cnt=1000
 # while(cnt):
 #     dict_bot={"name": "bot demo", "description":"this is bot demo","enabled":True, "config":"auto","owner":""}
 #     name= "bot demo "+str(cnt) 
@@ -78,41 +80,66 @@ entity_col = my_db["entity"]
 #     dict_bot['name']=name
 #     dict_bot['description'] = description
 #     bot_col.insert_one(dict_bot)
-
-#     bot = bot_col.find_one({"name":name})
-#     bot_id = str(bot['_id'])
-
-#     dict_entity ={"name":"","bg_color":"red","fg_color":"C00000","bot":bot_id}
-#     dict_entity["name"]="entity "+ str(cnt)
-#     entity_col.insert_one(dict_entity)
-
-#     dict_intent ={"name":"","description":"","bot":bot_id}
-#     dict_intent["name"]="intent "+ str(cnt)
-#     dict_intent["description"] = "this is intent "+str(cnt)
-#     intent_col.insert_one(dict_intent)
 #     cnt-=1
 
 
+# count = 1000
+# while(count):
+#     cnt=1000
+#     while(cnt):
+#         bot=bot_col.find_one({"name":"bot demo "+str(cnt)})
+#         bot_id = str(bot['_id'])
+
+#         dict_entity ={"name":"","bg_color":"red","fg_color":"C00000","bot":bot_id}
+#         dict_entity["name"]="entity "+ str(count) + " of bot "+str(cnt)
+#         entity_col.insert_one(dict_entity)
+
+#         dict_intent ={"name":"","description":"","bot":bot_id}
+#         dict_intent["name"]="intent "+ str(count) + " of bot "+str(cnt) 
+#         dict_intent["description"] = "this is intent "+str(count) + "of bot "+str(cnt) 
+#         intent_col.insert_one(dict_intent)
+#         cnt-=1
+#     count-=1
+
 # tạo chỉ mục đơn của entity
-# reps= entity_col.create_index([("bot")])
+# reps= entity_col.create_index([("bot",1)])
 # print(reps)
 
+# xóa index
+# reps = entity_col.drop_index([("bot",1)])
+# print(reps)
 ## tạo chỉ mục đơn của intent bot
 # reps = intent_col.create_index([("bot",1)])
 # print(reps)
 
 
-## 
-bot = bot_col.find_one({"name":"bot demo 999"})
-bot_id = str(bot["_id"])
+# tìm tất cả entity của bot 1000
 
-entity = entity_col.find_one({"bot":bot_id})
-intent = intent_col.find_one({"bot":bot_id})
-print("\n bot:",bot)
-print("\n entity :",entity)
-print("\n intent: ", intent)
+bot_id="61a0b47f24140ca79113ab86"
+
+print("entity")
+for entity in entity_col.find({"bot":bot_id}):
+    print(entity);
+
+# print("intent : ")
+# for intent in intent_col.find({"bot":bot_id}):
+#     print(intent)
+
+# bot = bot_col.find_one({"name":"bot demo 999"})
+# bot_id = str(bot["_id"])1
+
+# entity = entity_col.find_one({"bot":bot_id})
+# intent = intent_col.find_one({"bot":bot_id})
+# print("\n bot:",bot)
+# print("\n entity :",entity)
+# print("\n intent: ", intent)
 
 
+
+
+# bot_col.delete_many({})
+# entity_col.delete_many({})
+# intent_col.delete_many({})
 
 
     
