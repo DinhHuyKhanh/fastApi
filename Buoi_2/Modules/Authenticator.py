@@ -11,14 +11,14 @@ class Authenticator:
     def create_token(user: User):
         token = secrets.token_urlsafe(256)
         Authenticator.token_map["Bearer " +token] = user
-        return {token}
+        return token
 
     def login(login:User):
         list_users= user_service.read_users();
         for u in list_users :
             if u["username"] == login.username and u["password"]== login.password:
              return {"full_name": u["full_name"],"token": Authenticator.create_token(user=u)}
-        return {{"message":"login fail"}}
+        return {"message":"login fail"}
 
 class Verify_token:
     def verify_token(request: Request):
