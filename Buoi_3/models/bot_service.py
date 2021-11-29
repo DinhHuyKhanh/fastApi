@@ -1,6 +1,6 @@
-# from bson.objectid import ObjectId
 from bson.objectid import ObjectId
 from pymongo import MongoClient
+import json 
 
 myClient = MongoClient("mongodb://localhost:27017/")
 my_db = myClient["chatt"]
@@ -8,6 +8,41 @@ my_db = myClient["chatt"]
 bot_col = my_db["bot"]
 intent_col = my_db["intent"]
 entity_col = my_db["entity"]
+
+
+def find_all_bot(search: str,sort_type: str, field: str):
+    list_bot=[]
+   
+    _sort={"asc":1, "desc":-1,"1":1,"-1":-1}
+
+    if(_sort.get(sort_type) != None):
+        sort_type=_sort.get(sort_type)
+    else:
+        sort_type=1
+
+    for bot in bot_col.find({"name":{"$regex":search}}).sort(field,sort_type):
+        list_bot.append({ "id": str(bot["_id"]) ,"name":bot["name"],"description":bot["description"],"enabled":bot["enabled"],
+                    "config":bot["config"],"owner":bot["owner"] })
+    return list_bot
+
+def find_bot_by_id(bot_id: str):
+    bot = bot_col.find_one({"_id": ObjectId(bot_id)})
+    data= { "id": str(bot["_id"]) ,"name":bot["name"],"description":bot["description"],
+            "enabled":bot["enabled"], "config":bot["config"],"owner":bot["owner"] }
+    return data
+
+def create_bot(bot: json):
+    bot_col.insert_one(bot)
+    return {"message":"success"}
+
+def update_bot(bot_id: str , bot: json):
+    bot_col.update_one({"_id":ObjectId(bot_id)}, {"$set": bot})
+    return {"message":"success"}    
+
+def delete_bot(bot_id: str):
+    bot_col.delete_one({"_id":ObjectId(bot_id)})
+    return {"message":"success"}
+
 
 
 #lấy tất cả bot
@@ -115,11 +150,11 @@ entity_col = my_db["entity"]
 
 # tìm tất cả entity của bot 1000
 
-bot_id="61a0b47f24140ca79113ab86"
+# bot_id="61a0b47f24140ca79113ab86"
 
-print("entity")
-for entity in entity_col.find({"bot":bot_id}):
-    print(entity);
+# print("entity")
+# for entity in entity_col.find({"bot":bot_id}):
+#     print(entity);
 
 # print("intent : ")
 # for intent in intent_col.find({"bot":bot_id}):
