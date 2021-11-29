@@ -33,7 +33,7 @@ def delete_bot(bot_id: str):
     return models.bot_service.delete_bot(bot_id=bot_id)
 
 
-@app.get("/entity/{bot_id}")
+@app.get("/entity")
 def get_all_entity_by_bot_id(bot_id: str):
     return models.entity_service.get_entity_by_bot_id(bot_id=bot_id)
 
@@ -52,7 +52,7 @@ def delete_entity(entity_id: str):
     return models.entity_service.delete_entity(entity_id=entity_id)
 
 
-@app.get("/intent/{bot_id}")
+@app.get("/intent")
 def get_all_intent_by_bot_id(bot_id: str):
     return models.intent_service.get_intent_by_bot_id(bot_id=bot_id)
 
